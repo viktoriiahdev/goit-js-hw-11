@@ -22,6 +22,7 @@ const galleryRef = document.querySelector('.gallery');
 
 let gallery = new SimpleLightbox('.gallery img', {
   sourceAttr: 'data-large-img',
+  captionSelector: 'self',
   caption: true,
   captionType: 'attr',
   captionsData: 'alt',
@@ -66,12 +67,18 @@ function loadMore(e) {
 
 async function fetchImages(query) {
   const url = URL + '&q=' + encodeURIComponent(query) + '&page=' + page + '&per_page=' + perPage;
-  const response = await fetch(url);
-  const json = await response.json();
-  if (json.total != 0) Notify.success(`Hooray! We found ${json.total} images.`);
-  const data = await json.hits;
-  page += 1;
-  return data;
+  try {
+    const response = await axios.get(url);
+    console.dir(response);
+    const result = response.data;
+    if (result.total != 0) Notify.success(`Hooray! We found ${result.total} images.`);
+    const data = await result.hits;
+    page += 1;
+    return data;
+  } catch (error) {
+    console.error(error);
+    return;
+  }
 }
 
 function getGalleryMarkup(data) {
