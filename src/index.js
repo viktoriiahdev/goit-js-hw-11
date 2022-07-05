@@ -69,7 +69,6 @@ async function fetchImages(query) {
   const url = URL + '&q=' + encodeURIComponent(query) + '&page=' + page + '&per_page=' + perPage;
   try {
     const response = await axios.get(url);
-    console.dir(response);
     const result = response.data;
     if (result.total != 0) Notify.success(`Hooray! We found ${result.total} images.`);
     const data = await result.hits;
