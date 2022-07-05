@@ -1,3 +1,101 @@
-body{
+body {
+  margin: 0;
+  padding: 0;
+}
 
+* {
+  box-sizing: border-box;
+}
+
+form {
+  padding: 40px 15px;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  background-color: rgb(191, 247, 202);
+}
+
+form input,
+form button,
+.load-more {
+  padding: 15px 30px;
+
+  cursor: pointer;
+  appearance: none;
+  outline: 1px solid transparent;
+  box-shadow: none;
+  background-color: transparent;
+
+  color: black;
+  font-size: 16px;
+
+  transition-property: color;
+  transition-timing-function: linear;
+  transition-duration: 300ms;
+}
+
+form input {
+  min-width: 200px;
+  width: 30%;
+  border: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+form input:hover,
+form input:focus {
+  border-color: black;
+}
+
+form input::placeholder {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+form button {
+  border: 1px solid black;
+}
+
+form button:hover,
+form button:focus {
+  background: black;
+  color: white;
+}
+
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 15px;
+
+  max-width: 1200px;
+  width: 100%;
+  padding: 0 15px;
+  margin: 50px auto;
+}
+
+.gallery .photo-card img {
+  max-width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.gallery .photo-card {
+  max-width: 100%;
+  width: max(24%, 350px);
+  display: flex;
+  flex-direction: column;
+}
+
+.gallery .photo-card .info {
+  display: flex;
+  justify-content: space-between;
+}
+
+.load-more {
+  display: none;
+  margin: 0 auto;
+
+  padding: 15px 30px;
+  background-color: rgb(191, 247, 202);
+  border: 1px solid black;
 }
