@@ -70,7 +70,7 @@ async function fetchImages(query) {
   try {
     const response = await axios.get(url);
     const result = response.data;
-    if (result.total != 0) Notify.success(`Hooray! We found ${result.total} images.`);
+    if (result.total != 0 && page === 1) Notify.success(`Hooray! We found ${result.total} images.`);
     const data = await result.hits;
     page += 1;
     return data;
