@@ -53,7 +53,6 @@ function onFormSubmit(e) {
 function loadMore(e) {
   loadMoreBtn.style.opacity = '0.5';
   fetchImages(query).then(result => {
-    console.log(result.length);
     const markup = getGalleryMarkup(result);
     galleryRef.insertAdjacentHTML('beforeend', markup);
     gallery.refresh();
