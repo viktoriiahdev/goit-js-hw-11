@@ -47,6 +47,10 @@ function onFormSubmit(e) {
     const markup = getGalleryMarkup(result);
     galleryRef.innerHTML = markup;
     gallery.refresh();
+    if (result.length < perPage) {
+      Notify.info("We're sorry, but you've reached the end of search results.");
+      return;
+    }
   });
 }
 
@@ -58,6 +62,7 @@ function loadMore(e) {
     gallery.refresh();
     if (result.length < perPage) {
       loadMoreBtn.style.display = 'none';
+      Notify.info("We're sorry, but you've reached the end of search results.");
       return;
     }
     loadMoreBtn.style.opacity = '1';
