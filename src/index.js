@@ -36,18 +36,19 @@ let query = '';
 function onFormSubmit(e) {
   e.preventDefault();
   query = e.currentTarget.elements.searchQuery.value.trim();
+  e.currentTarget.reset();
   page = 1;
-  fetchImages(query).then(result => {
-    loadMoreBtn.style.display = result.length < perPage ? 'none' : 'block';
-    if (result.length === 0) {
+  fetchImages(query).then(({ hits, totalHits }) => {
+    loadMoreBtn.style.display = hits.length < perPage ? 'none' : 'block';
+    if (hits.length === 0) {
       Notify.failure('Sorry, there are no images matching your search query. Please try again.');
       galleryRef.innerHTML = '';
       return;
     }
-    const markup = getGalleryMarkup(result);
+    const markup = getGalleryMarkup(hits);
     galleryRef.innerHTML = markup;
     gallery.refresh();
-    if (result.length < perPage) {
+    if (totalHits.length < perPage) {
       Notify.info("We're sorry, but you've reached the end of search results.");
       return;
     }
@@ -56,15 +57,10 @@ function onFormSubmit(e) {
 
 function loadMore(e) {
   loadMoreBtn.style.opacity = '0.5';
-  fetchImages(query).then(result => {
-    const markup = getGalleryMarkup(result);
+  fetchImages(query).then(({ hits, totalHits }) => {
+    const markup = getGalleryMarkup(hits);
     galleryRef.insertAdjacentHTML('beforeend', markup);
     gallery.refresh();
-    if (result.length < perPage) {
-      loadMoreBtn.style.display = 'none';
-      Notify.info("We're sorry, but you've reached the end of search results.");
-      return;
-    }
     loadMoreBtn.style.opacity = '1';
   });
 }
@@ -75,9 +71,12 @@ async function fetchImages(query) {
     const response = await axios.get(url);
     const result = response.data;
     if (result.total != 0 && page === 1) Notify.success(`Hooray! We found ${result.total} images.`);
-    const data = await result.hits;
+    if (perPage * page > result.totalHits) {
+      Notify.info("We're sorry, but you've reached the end of search results.");
+      loadMoreBtn.style.display = 'none';
+    }
     page += 1;
-    return data;
+    return result;
   } catch (error) {
     console.error(error);
     return;
